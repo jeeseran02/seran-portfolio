@@ -1,46 +1,73 @@
-# seran-portfolio
-브랜치 규칙
-브랜치 구조
-main      → 배포용(항상 안정)
-└─ stage  → main 머지 전 통합 테스트
-   └─ 작업 브랜치들 (기능 단위)
+# React + TypeScript + Vite
 
-브랜치 네이밍
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-기본 형식: feature/ui-YYMMDD, feature/data-YYMMDD, setting-YYMMDD 등
+Currently, two official plugins are available:
 
-예시
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-feature/ui-251104 (UI 작업)
+## React Compiler
 
-feature/about-251105 (About 섹션)
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-setting-251103 (환경 세팅)
+## Expanding the ESLint configuration
 
-필요 시 bugfix/…, hotfix/…도 사용 가능
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-커밋 규칙
-형식
-[행동][YYMMDD]-간단 설명
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-행동(Action): create | update | delete | enhance | connect
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
 
-날짜: YYMMDD (예: 2025-11-03 → 251103)
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-설명: 1줄 요약 (한국어 OK)
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-예시
-[update][251103]-개발환경셋팅
-[create][251104]-Home 섹션 기본 레이아웃 생성
-[enhance][251105]-프로젝트 카드 hover 인터랙션 개선
-[delete][251105]-사용하지 않는 테스트 이미지 제거
-[connect][251106]-EmailJS 연결 및 폼 검증 추가
-
-커밋 원칙
-
-한 커밋 = 하나의 목적(파일 여러 개 수정 OK, 주제가 1개면 됨)
-
-설명은 간결하고 결과 중심(왜/무엇을)
-
-대량 포맷팅/자동정리는 별도 커밋로 분리(update 또는 enhance)
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
