@@ -1,73 +1,49 @@
-# React + TypeScript + Vite
+## 🌿 Branch Rule
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 📌 기본 구조
+main ── develop ── feature/ ── fix/ ── hotfix/ ── release/
 
-Currently, two official plugins are available:
+| 브랜치명 | 역할 | 생성 기준 / 병합 대상 |
+|-----------|-------|----------------|
+| **main** | 실제 배포용 안정 버전 | `release`에서 병합 |
+| **develop** | 개발 통합 브랜치 | 각 `feature/` 브랜치를 병합 |
+| **feature/** | 새로운 기능 개발용 | `develop`에서 분기 → 완료 후 `develop`으로 PR |
+| **fix/** | 버그 수정용 (개발 중 발견된 이슈) | `develop`에서 분기 → 완료 후 `develop`으로 PR |
+| **hotfix/** | 긴급 수정용 (배포 후 발견된 버그) | `main`에서 분기 → 수정 후 `main`과 `develop`에 병합 |
+| **release/** | 배포 전 QA 및 안정화용 | `develop`에서 분기 → QA 완료 후 `main` 병합 |
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🌱 브랜치 이름 규칙
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 💬 Commit Rule
 
-## Expanding the ESLint configuration
+### 🧩 기본 구조
+> 예시  
+> `feat: 로그인 페이지 UI 추가 (#12)`  
+> `fix: 회원가입 시 이메일 검증 오류 수정 (#45)`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🏷️ 커밋 타입 목록
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| 타입 | 의미 |
+|------|------|
+| **feat** | 새로운 기능 추가 |
+| **fix** | 버그 수정 |
+| **docs** | 문서 수정 (README, 주석 등) |
+| **style** | 코드 포맷, 세미콜론 등 비기능적 변경 |
+| **refactor** | 코드 리팩토링 (기능 변경 없음) |
+| **test** | 테스트 코드 추가 및 수정 |
+| **chore** | 빌드 설정, 패키지 관리 등 기타 변경 |
+| **perf** | 성능 개선 |
+| **rename** | 파일/폴더 이름 변경 |
+| **remove** | 파일 삭제 |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### ✍️ 커밋 메시지 예시
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### ✅ 권장 워크플로우
+1. `develop` 브랜치에서 새 기능을 시작할 때 `feature/` 브랜치를 생성  
+2. 기능 구현 완료 후 **PR**을 통해 `develop`에 병합  
+3. QA 및 테스트를 거쳐 `release/` → `main` 순으로 병합  
+4. 배포 후 긴급 수정은 `hotfix/` 브랜치로 진행  
